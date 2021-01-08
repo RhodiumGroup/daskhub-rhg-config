@@ -1,0 +1,300 @@
+# Helm chart values applied to all deployments.
+
+# This config is based off of the approach used by the Pangeo cloud deployments
+# (https://github.com/pangeo-data/pangeo-cloud-federation)
+jupyterhub:
+  prePuller:
+    hook:
+      enabled: false
+    continuous:
+      enabled: false
+  singleuser:
+    # see https://jupyterhub-kubespawner.readthedocs.io/en/latest/spawner.html for a
+    # description of configuration options
+    image:
+      pullPolicy: "Always"
+      name: gcr.io/rhg-project-1/notebook
+      tag: v1.0.0
+    startTimeout: 600
+    storage:
+      capacity: 10Gi
+    cpu:
+      limit: 3.5
+      guarantee: 3.5
+    memory:
+      limit: 22.5G
+      guarantee: 22.5G
+    cloudMetadata:
+      blockWithIptables: false
+    profileList:
+      - display_name: "Rhodium base: stable"
+        description: "Stable build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a>. (v1.0.0)"
+        default: true
+      - display_name: "Rhodium base: stable (large)"
+        description: "Larger notebook allowance, with the stable build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a> (v1.0.0)"
+        kubespawner_override:
+          cpu_limit: 7
+          cpu_guarantee: 7
+          mem_limit: 45G
+          mem_guarantee: 45G
+      - display_name: "Rhodium base: latest"
+        description: "Latest build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a>."
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:latest
+      - display_name: "Rhodium base: latest (large)"
+        description: "Larger notebook allowance, with the latest build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a>"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:latest
+          cpu_limit: 7
+          cpu_guarantee: 7
+          mem_limit: 45G
+          mem_guarantee: 45G
+      - display_name: "Octave: stable"
+        description: "Stable build of our Octave-enabled environment (v1.0.0)"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:v1.0.0-octave
+      - display_name: "Octave: stable (large)"
+        description: "Larger notebook allowance, with the stable build our Octave-enabled environment (v1.0.0)"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:v1.0.0-octave
+          cpu_limit: 7
+          cpu_guarantee: 7
+          mem_limit: 45G
+          mem_guarantee: 45G
+      - display_name: "Octave: latest"
+        description: "Latest build of our Octave-enabled environment"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:octave
+      - display_name: "Octave: latest (large)"
+        description: "Larger notebook allowance, with the latest build our Octave-enabled environment"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:octave
+          cpu_limit: 7
+          cpu_guarantee: 7
+          mem_limit: 45G
+          mem_guarantee: 45G
+      - display_name: "Coastal: stable"
+        description: "Stable build of our Coastal project environment (v1.0.0)"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:v1.0.0-coastal
+      - display_name: "Coastal: stable (large)"
+        description: "Larger notebook allowance, with the stable build our Coastal project environment (v1.0.0)"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:v1.0.0-coastal
+          cpu_limit: 7
+          cpu_guarantee: 7
+          mem_limit: 45G
+          mem_guarantee: 45G
+      - display_name: "Coastal: latest"
+        description: "Latest build of our Coastal project environment"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:coastal
+      - display_name: "Coastal: latest (large)"
+        description: "Larger notebook allowance, with the latest build of our Coastal project environment"
+        kubespawner_override:
+          image: gcr.io/rhg-project-1/notebook:coastal
+          cpu_limit: 7
+          cpu_guarantee: 7
+          mem_limit: 45G
+          mem_guarantee: 45G
+      # uncomment test image to run tests (typically just on adrastea)
+      # - display_name: "Rhodium base: test"
+      #   description: "Test build of our Coastal project environment"
+      #   kubespawner_override:
+      #     image: gcr.io/rhg-project-1/notebook:test
+  hub:
+    resources:
+      requests:
+        cpu: "0.25"
+        memory: 0.5Gi
+      limits:
+        cpu: "1.25"
+        memory: 1Gi
+    extraConfig:
+      customPodHook: |
+            # runs container in privileged mode for FUSE mount access
+            from kubernetes import client
+            def modify_pod_hook(spawner, pod):
+                pod.spec.containers[0].security_context = client.V1SecurityContext(
+                    privileged=True,
+                    capabilities=client.V1Capabilities(
+                        add=['SYS_ADMIN']
+                    )
+                )
+                return pod
+            c.KubeSpawner.modify_pod_hook = modify_pod_hook
+            c.JupyterHub.logo_file = '/usr/local/share/jupyterhub/static/custom/images/logo.png'
+            c.JupyterHub.template_paths = ['/usr/local/share/jupyterhub/custom_templates/']
+    extraVolumes:
+      - name: custom-templates
+        gitRepo:
+          repository: "https://github.com/RhodiumGroup/rhodium-custom-jupyterhub-templates.git"
+    extraVolumeMounts:
+      - mountPath: /usr/local/share/jupyterhub/custom_templates
+        name: custom-templates
+        subPath: "rhodium-custom-jupyterhub-templates/templates"
+      - mountPath: /usr/local/share/jupyterhub/static/custom
+        name: custom-templates
+        subPath: "rhodium-custom-jupyterhub-templates/assets"
+    services:
+      dask-gateway:
+        apiToken: OVERRIDEME
+  scheduling:
+    userScheduler:
+      enabled: true
+    userPlaceholder:
+      enabled: false
+    userPods:
+      nodeAffinity:
+        matchNodePurpose: require
+    corePods:
+      nodeAffinity:
+        matchNodePurpose: require
+  cull:
+    timeout: 259200
+
+  proxy:
+    secretToken: OVERRIDEME
+    https:
+      enabled: true
+      letsencrypt:
+        contactEmail: mdelgado@rhg.com
+
+  auth:
+    type: github
+    scopes:
+      - "read:user"
+      - "read:org"
+    admin:
+      access: true
+      users:
+        - bolliger32
+        - brews
+        - delgadom
+        - dgergel
+        - mattgoldklang
+
+dask-gateway:
+  gateway:
+    auth:
+      jupyterhub:
+        apiToken: OVERRIDEME
+    extraConfig:
+      optionHandler: |
+        from dask_gateway_server.options import Options, String, Select, Mapping, Float
+        from math import ceil
+
+        def cluster_options(user):
+
+            # A mapping from profile name to configuration overrides
+            # 12/15/20: always using one core unless explicitly defined by 
+            # `cpus` due to this issue: https://github.com/dask/dask-gateway/issues/364
+            # Can update this behavior if that gets addressed
+            # standard_cores = 1.8
+            standard_mem = 12.7
+            scaling_factors = {
+                "micro": 0.5,
+                "standard": 1,
+                "big": 2,
+                "giant": 4
+            }
+
+            default_tolerations = {
+                "0": {
+                    "key": "k8s.dask.org_dedicated",
+                    "operator": "Equal",
+                    "value": "worker",
+                    "effect": "NoSchedule"
+                }
+            }
+
+            def option_handler(options):
+                if (":" not in options.worker_image) or (":" not in options.scheduler_image):
+                    raise ValueError("When specifying an image you must also provide a tag")
+                extra_annotations = {
+                    "hub.jupyter.org/username": user.name
+                }
+                default_extra_labels = {
+                    "hub.jupyter.org/username": user.name,
+                }
+                
+                this_env = options.env_items
+
+                # add extra pip packages to be picked up by prepare.sh
+                if options.extra_pip_packages != "":
+                    this_env["EXTRA_PIP_PACKAGES"] = options.extra_pip_packages
+
+                # add gcsfuse Tokens
+                this_env["GCSFUSE_TOKENS"] = options.gcsfuse_tokens
+
+                # add google cloud auth if specified
+                if options.cred_name != "":
+                  this_env["GOOGLE_APPLICATION_CREDENTIALS"] = f"/opt/gcsfuse_tokens/{options.cred_name}.json"
+
+                # calculate cpu request and limit
+                # see above comment for why we are commenting out standard_cores for now
+                # cpu_req = scaling_factors[options.profile] * standard_cores
+
+                # set threads appropriately
+                # (12/18/20) Currently setting to 1 b/c always only one thread available
+                # per dask thread
+                this_env["OMP_NUM_THREADS"]="1"
+                this_env["MKL_NUM_THREADS"]="1"
+                this_env["OPENBLAS_NUM_THREADS"]="1"
+
+                return {
+                    "worker_cores": options.cpus,
+                    # see https://github.com/dask/dask-gateway/blob/e409f0e87f45e0a51fd7c009b5ec010bc5253bf1/dask-gateway-server/dask_gateway_server/backends/kubernetes/controller.py#L1055
+                    "worker_cores_limit": ceil(options.cpus), # this is necessary to get correct nthreads
+                    "worker_memory": f"{scaling_factors[options.profile] * standard_mem:.2f}G",
+                    # setting images separately here to get a light-weight scheduler
+                    "worker_extra_container_config": {
+                        "image": options.worker_image,
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                          "privileged": True # allows gcsfuse mount
+                        }
+                    },
+                    "scheduler_extra_container_config": {
+                        "image": options.scheduler_image,
+                        "imagePullPolicy": "Always",
+                    },
+                    "worker_extra_pod_annotations": extra_annotations,
+                    "worker_extra_pod_config": {
+                        "tolerations": list(options.worker_tolerations.values())
+                    },
+                    "worker_extra_pod_labels": {
+                        **default_extra_labels,
+                        **options.extra_worker_labels,
+                    },
+                    "scheduler_extra_pod_annotations": extra_annotations,
+                    "scheduler_extra_pod_labels": default_extra_labels,
+                    "scheduler_extra_pod_config": {
+                        "tolerations": list(default_tolerations.values()),
+                    },
+                    "environment": this_env,
+                    "idle_timeout": 3600*6, # 6 hour idle timeout
+                    "scheduler_cores": options.scheduler_cores,
+                    "scheduler_memory": options.scheduler_memory,
+                }
+            return Options(
+                Select(
+                    "profile",
+                    ["micro", "standard", "big", "giant"],
+                    default="standard",
+                    label="Cluster Memory Size"
+                ),
+                Float("cpus", default=1, min=1, max=7, label="Worker CPUs"),
+                String("worker_image", default="gcr.io/rhg-project-1/worker:latest", label="Worker Image"),
+                String("scheduler_image", default="gcr.io/rhg-project-1/scheduler:latest", label="Scheduler Image"),
+                String("extra_pip_packages", default="", label="Extra pip Packages"),
+                String("gcsfuse_tokens", default="", label="GCSFUSE Tokens"),
+                String("cred_name", default="", label="Bucket for Google Cloud Creds"),
+                Mapping("worker_tolerations", default=default_tolerations, label="Worker Pod Tolerations"),
+                Mapping("extra_worker_labels", default={}, label="Extra Worker Pod Labels"),
+                Mapping("env_items", default={}, label="Environment Variables"),
+                String("scheduler_memory", default="22.5 G", label="Scheduler Memory"),
+                Float("scheduler_cores", default=3.5, min=1, max=7, label="Scheduler CPUs"),
+                handler=option_handler,
+            )
+        c.Backend.cluster_options = cluster_options

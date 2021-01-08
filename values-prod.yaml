@@ -1,0 +1,55 @@
+# Helm chart values for the prod environment
+
+jupyterhub:
+  # Work around github group-based auth:
+  auth:
+    whitelist:
+      users:
+        # rhg employees
+        - ahamidi1
+        - hanskolus
+        - hhessRHG
+        - jk-sohal
+        - kemccusker
+        - rhg-smohan
+        - smohan-rhg
+        - tghouser
+        - wjherndon
+        # external collaborators
+        - dpa9694
+        - jtschoi
+        - njdepsky
+
+# this allows the dask-gateway pods to talk to the hub
+  hub:
+    networkPolicy:
+      ingress:
+        - ports:
+          - port: http
+          - port: https
+          from:
+            - podSelector:
+                matchLabels:
+                  gateway.dask.org/instance: "adrastea-dask-gateway"
+  # this allows dask-gateway pods to talk to the proxy and autohttps pods
+  proxy:
+    chp:
+      networkPolicy:
+        ingress:
+          - ports:
+            - port: http
+            - port: https
+            from:
+              - podSelector:
+                  matchLabels:
+                    gateway.dask.org/instance: "adrastea-dask-gateway"
+    traefik:
+      networkPolicy:
+        ingress:
+          - ports:
+            - port: http
+            - port: https
+            from:
+              - podSelector:
+                  matchLabels:
+                    gateway.dask.org/instance: "adrastea-dask-gateway"
