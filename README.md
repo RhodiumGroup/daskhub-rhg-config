@@ -32,7 +32,8 @@ argocd app create daskhub \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_secret=$JHUB_CLIENTSECRET \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.oauth_callback_url=$JHUB_CALLBACKURL \
     --parameter daskhub.jupyterhub.hub.services.dask-gateway.apiToken=$DASK_APITOKEN \
-    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN \ 
+    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN \
+    --label env=prod \
     --dest-server https://kubernetes.default.svc \
     --dest-namespace $DEPLOY_NAMESPACE \
     --sync-policy automated \
@@ -67,7 +68,8 @@ argocd app create daskhub-dev \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_secret=$JHUB_CLIENTSECRET \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.oauth_callback_url=$JHUB_CALLBACKURL \
     --parameter daskhub.jupyterhub.hub.services.dask-gateway.apiToken=$DASK_APITOKEN \
-    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN \ 
+    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN \
+    --label env=dev \
     --dest-server https://kubernetes.default.svc \
     --dest-namespace $DEPLOY_NAMESPACE \
     --sync-policy automated \
