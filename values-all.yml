@@ -1,3 +1,5 @@
+# Helm chart values applied to all deployments.
+
 # This config is based off of the approach used by the Pangeo cloud deployments
 # (https://github.com/pangeo-data/pangeo-cloud-federation)
 jupyterhub:
