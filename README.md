@@ -23,14 +23,14 @@ argocd app create daskhub \
     --path daskhub-rhg \
     --values values.yaml \
     --values values-prod.yaml \
-    --parameter jupyterhub.proxy.service.loadBalancerIP=$JHUB_LOADBALANCERIP \
-    --parameter jupyterhub.proxy.https.hosts=$JHUB_HOSTS \
-    --parameter jupyterhub.proxy.secretToken=$JHUB_SECRETTOKEN \
-    --parameter jupyterhub.auth.github.clientId=$JHUB_CLIENTID \
-    --parameter jupyterhub.auth.github.clientSecret=$JHUB_CLIENTSECRET \
-    --parameter jupyterhub.auth.github.callbackUrl=$JHUB_CALLBACKURL \
-    --parameter jupyterhub.hub.services.dask-gateway.apiToken=$DASK_APITOKEN \
-    --parameter dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN\ 
+    --parameter daskhub.jupyterhub.proxy.service.loadBalancerIP=$JHUB_LOADBALANCERIP \
+    --parameter daskhub.jupyterhub.proxy.https.hosts=$JHUB_HOSTS \
+    --parameter daskhub.jupyterhub.proxy.secretToken=$JHUB_SECRETTOKEN \
+    --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_id=$JHUB_CLIENTID \
+    --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_secret=$JHUB_CLIENTSECRET \
+    --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.oauth_callback_url=$JHUB_CALLBACKURL \
+    --parameter daskhub.jupyterhub.hub.services.dask-gateway.apiToken=$DASK_APITOKEN \
+    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN \ 
     --dest-server https://kubernetes.default.svc \
     --dest-namespace daskhub \
     --sync-policy automated \
