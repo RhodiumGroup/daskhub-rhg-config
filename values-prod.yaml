@@ -1,27 +1,30 @@
 # Helm chart values for the prod environment
-
 jupyterhub:
-  # Work around github group-based auth:
-  auth:
-    whitelist:
-      users:
-        # rhg employees
-        - ahamidi1
-        - hanskolus
-        - hhessRHG
-        - jk-sohal
-        - kemccusker
-        - rhg-smohan
-        - smohan-rhg
-        - tghouser
-        - wjherndon
-        # external collaborators
-        - dpa9694
-        - jtschoi
-        - njdepsky
-
-# this allows the dask-gateway pods to talk to the hub
   hub:
+    config:
+      Authenticator:
+        admin_users:
+          - bolliger32
+          - brews
+          - delgadom
+          - dgergel
+          - mattgoldklang
+        allowed_users:
+          # rhg employees
+          - ahamidi1
+          - hanskolus
+          - hhessRHG
+          - jk-sohal
+          - kemccusker
+          - rhg-smohan
+          - smohan-rhg
+          - tghouser
+          - wjherndon
+          # external collaborators
+          - dpa9694
+          - jtschoi
+          - njdepsky
+# this allows the dask-gateway pods to talk to the hub
     networkPolicy:
       ingress:
         - ports:

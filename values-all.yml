@@ -139,6 +139,13 @@ jupyterhub:
     services:
       dask-gateway:
         apiToken: OVERRIDEME
+    config:
+      JupyterHub:
+        admin_access: true
+        authenticator_class: github
+      OAuthenticator:
+        scope:
+          - read:user
   scheduling:
     userScheduler:
       enabled: true
@@ -159,20 +166,6 @@ jupyterhub:
       enabled: true
       letsencrypt:
         contactEmail: mdelgado@rhg.com
-
-  auth:
-    type: github
-    scopes:
-      - "read:user"
-      - "read:org"
-    admin:
-      access: true
-      users:
-        - bolliger32
-        - brews
-        - delgadom
-        - dgergel
-        - mattgoldklang
 
 dask-gateway:
   gateway:
