@@ -183,8 +183,8 @@ daskhub:
               # 12/15/20: always using one core unless explicitly defined by 
               # `cpus` due to this issue: https://github.com/dask/dask-gateway/issues/364
               # Can update this behavior if that gets addressed
-              # standard_cores = 1.8
-              standard_mem = 12.7
+              # standard_cores = 1.75
+              standard_mem = 12.25
               scaling_factors = {
                   "micro": 0.5,
                   "standard": 1,
