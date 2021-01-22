@@ -11,7 +11,7 @@ daskhub:
             from:
               - podSelector:
                   matchLabels:
-                    gateway.dask.org/instance: "daskhub-dask-gateway"
+                    gateway.dask.org/instance: "daskhub-dev-dask-gateway"
     # this allows dask-gateway pods to talk to the proxy and autohttps pods
     proxy:
       chp:
@@ -23,7 +23,7 @@ daskhub:
               from:
                 - podSelector:
                     matchLabels:
-                      gateway.dask.org/instance: "daskhub-dask-gateway"
+                      gateway.dask.org/instance: "daskhub-dev-dask-gateway"
       traefik:
         networkPolicy:
           ingress:
@@ -33,4 +33,4 @@ daskhub:
               from:
                 - podSelector:
                     matchLabels:
-                      gateway.dask.org/instance: "daskhub-dask-gateway"
+                      gateway.dask.org/instance: "daskhub-dev-dask-gateway"
