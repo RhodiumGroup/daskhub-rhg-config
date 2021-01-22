@@ -140,28 +140,6 @@ daskhub:
         dask-gateway:
           apiToken: OVERRIDEME
       config:
-        Authenticator:
-          admin_users:
-            - bolliger32
-            - brews
-            - delgadom
-            - dgergel
-            - mattgoldklang
-          allowed_users:
-            # rhg employees
-            - ahamidi1
-            - hanskolus
-            - hhessRHG
-            - jk-sohal
-            - kemccusker
-            - rhg-smohan
-            - smohan-rhg
-            - tghouser
-            - wjherndon
-            # external collaborators
-            - dpa9694
-            - jtschoi
-            - njdepsky
         JupyterHub:
           admin_access: true
           authenticator_class: github

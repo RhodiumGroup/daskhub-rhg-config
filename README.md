@@ -25,6 +25,7 @@ argocd app create daskhub \
     --path daskhub-rhg \
     --values values.yaml \
     --values values-prod.yaml \
+    --values values-users.yaml \
     --parameter daskhub.jupyterhub.proxy.service.loadBalancerIP=$JHUB_LOADBALANCERIP \
     --parameter daskhub.jupyterhub.proxy.https.hosts=$JHUB_HOSTS \
     --parameter daskhub.jupyterhub.proxy.secretToken=$JHUB_SECRETTOKEN \
@@ -67,6 +68,7 @@ argocd app create daskhub-dev \
     --path daskhub-rhg \
     --values values.yaml \
     --values values-dev.yaml \
+    --values values-users.yaml \
     --parameter daskhub.jupyterhub.proxy.service.loadBalancerIP=$JHUB_LOADBALANCERIP \
     --parameter daskhub.jupyterhub.proxy.https.hosts=$JHUB_HOSTS \
     --parameter daskhub.jupyterhub.proxy.secretToken=$JHUB_SECRETTOKEN \
