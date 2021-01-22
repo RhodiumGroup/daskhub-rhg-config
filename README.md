@@ -40,7 +40,14 @@ argocd app create daskhub \
     --port-forward-namespace argocd
 ```
 
-This will automatically sync to to git tag "v1.2.3". You can alternatively deploy tracking the `main` branch with
+This will automatically sync to to git tag "v1.2.3". When a new tag is created, you can set the app to sync to this tag with
+
+```
+argocd app set daskhub --revision <new-tag> --port-forward-namespace argocd
+```
+
+
+Alternatively, you can deploy an app tracking the `main` branch with
 
 ```
 export JHUB_LOADBALANCERIP="127.0.0.1"
