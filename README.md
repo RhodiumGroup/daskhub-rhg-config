@@ -14,7 +14,6 @@ export JHUB_CLIENTID="abc999"
 export JHUB_CLIENTSECRET="cba666"
 export JHUB_CALLBACKURL="https://fakewebsite.com/hub/oauth_callback"
 export DASK_APITOKEN="xyz111"
-export JHUB_APITOKEN="zyx222"
 export DEPLOY_NAMESPACE="daskhub"
 export DEPLOY_REVISION="v1.2.3"
 
@@ -33,7 +32,7 @@ argocd app create daskhub \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_secret=$JHUB_CLIENTSECRET \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.oauth_callback_url=$JHUB_CALLBACKURL \
     --parameter daskhub.jupyterhub.hub.services.dask-gateway.apiToken=$DASK_APITOKEN \
-    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN \
+    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$DASK_APITOKEN \
     --dest-server https://kubernetes.default.svc \
     --dest-namespace $DEPLOY_NAMESPACE \
     --sync-policy automated \
@@ -58,7 +57,6 @@ export JHUB_CLIENTID="abc999"
 export JHUB_CLIENTSECRET="cba666"
 export JHUB_CALLBACKURL="https://fakewebsite-dev.com/hub/oauth_callback"
 export DASK_APITOKEN="xyz111"
-export JHUB_APITOKEN="zyx222"
 export DEPLOY_NAMESPACE="daskhub-dev"
 
 kubectl create namespace $DEPLOY_NAMESPACE
@@ -76,7 +74,7 @@ argocd app create daskhub-dev \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_secret=$JHUB_CLIENTSECRET \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.oauth_callback_url=$JHUB_CALLBACKURL \
     --parameter daskhub.jupyterhub.hub.services.dask-gateway.apiToken=$DASK_APITOKEN \
-    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$JHUB_APITOKEN \
+    --parameter daskhub.dask-gateway.gateway.auth.jupyterhub.apiToken=$DASK_APITOKEN \
     --dest-server https://kubernetes.default.svc \
     --dest-namespace $DEPLOY_NAMESPACE \
     --sync-policy automated \
