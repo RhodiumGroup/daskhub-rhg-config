@@ -37,6 +37,7 @@ argocd app create daskhub \
     --dest-namespace $DEPLOY_NAMESPACE \
     --sync-policy automated \
     --auto-prune \
+    --self-heal \
     --port-forward-namespace argocd
 ```
 
@@ -79,6 +80,7 @@ argocd app create daskhub-dev \
     --dest-namespace $DEPLOY_NAMESPACE \
     --sync-policy automated \
     --auto-prune \
+    --self-heal \
     --port-forward-namespace argocd
 ```
 
