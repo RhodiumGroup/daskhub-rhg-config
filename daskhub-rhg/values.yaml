@@ -287,7 +287,7 @@ daskhub:
                   Mapping("extra_worker_labels", default={}, label="Extra Worker Pod Labels"),
                   Mapping("env_items", default={}, label="Environment Variables"),
                   String("scheduler_memory", default="22.5 G", label="Scheduler Memory"),
-                  Float("scheduler_cores", default=3.5, min=1, max=7, label="Scheduler CPUs"),
+                  Float("scheduler_cores", default=3.5, min=1, max=8, label="Scheduler CPUs"),
                   handler=option_handler,
               )
           c.Backend.cluster_options = cluster_options
