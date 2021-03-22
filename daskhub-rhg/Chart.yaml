@@ -16,5 +16,5 @@ appVersion: "0.1.1"
 
 dependencies:
   - name: daskhub
-    version: "4.5.7"
+    version: "2021.3.1"
     repository: 'https://helm.dask.org'
