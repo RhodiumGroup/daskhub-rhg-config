@@ -266,7 +266,7 @@ daskhub:
                           "tolerations": list(default_tolerations.values()),
                       },
                       "environment": this_env,
-                      "idle_timeout": 3600*6, # 6 hour idle timeout
+                      "idle_timeout": 60*10, # 10 min idle timeout
                       "scheduler_cores": options.scheduler_cores,
                       "scheduler_memory": options.scheduler_memory,
                   }
