@@ -4,9 +4,21 @@ Daskhub-flavored Jupyterhub deployment configuration for argocd.
 This is a demonstration sandbox.
 
 ## Fresh deployment
+
+### Setup (`argocd`)
+To begin, you need to have `argocd` deployed on a cluster. If it is not already deployed, you can do so with
+
+```bash
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl patch deploy argocd-server -n argocd -p '[{"op": "add", "path": "/spec/template/spec/containers/0/command/-", "value": "--disable-auth"}]' --type json
+```
+
+This sets up `argocd` for minimalist and dev envrionments, to be interacted with through the `argocd` CLI.
+
+### Deploying apps
 Deploy the app fresh, using automated syncing, with `argocd` from the CLI with:
 
-```
+```bash
 export JHUB_LOADBALANCERIP="127.0.0.1"
 export JHUB_HOSTS="{fakewebsite.com}"
 export JHUB_SECRETTOKEN="fakenumbers"
@@ -43,14 +55,14 @@ argocd app create daskhub \
 
 This will automatically sync to to git tag "v1.2.3". When a new tag is created, you can set the app to sync to this tag with
 
-```
+```bash
 argocd app set daskhub --revision <new-tag> --port-forward-namespace argocd
 ```
 
 
 Alternatively, you can deploy an app tracking the `main` branch with
 
-```
+```bash
 export JHUB_LOADBALANCERIP="127.0.0.1"
 export JHUB_HOSTS="{fakewebsite-dev.com}"
 export JHUB_SECRETTOKEN="otherfakenumbers"
