@@ -8,7 +8,6 @@ daskhub:
             - brews
             - delgadom
             - dgergel
-            - mattgoldklang
           allowed_users:
             # rhg employees
             - ahamidi1
