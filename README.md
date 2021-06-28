@@ -16,12 +16,14 @@ kubectl patch deploy argocd-server -n argocd -p '[{"op": "add", "path": "/spec/t
 This sets up `argocd` for minimalist and dev envrionments, to be interacted with through the `argocd` CLI.
 
 ### Deploying apps
+
+**NOTE:** For each of the following deployment workflows, if deploying with daskhub version 2021.6.0 or earlier, you will also need to pass the parameter override `daskhub.jupyterhub.proxy.secretToken`. You will need to pass this parameter following your first upgrade to 2021.6.1 or later, but afterwards you no longer need the parameter override.
+
 Deploy the app fresh, using automated syncing, with `argocd` from the CLI with:
 
 ```bash
 export JHUB_LOADBALANCERIP="127.0.0.1"
 export JHUB_HOSTS="{fakewebsite.com}"
-export JHUB_SECRETTOKEN="fakenumbers"
 export JHUB_CLIENTID="abc999"
 export JHUB_CLIENTSECRET="cba666"
 export JHUB_CALLBACKURL="https://fakewebsite.com/hub/oauth_callback"
@@ -39,7 +41,6 @@ argocd app create daskhub \
     --values values-users.yaml \
     --parameter daskhub.jupyterhub.proxy.service.loadBalancerIP=$JHUB_LOADBALANCERIP \
     --parameter daskhub.jupyterhub.proxy.https.hosts=$JHUB_HOSTS \
-    --parameter daskhub.jupyterhub.proxy.secretToken=$JHUB_SECRETTOKEN \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_id=$JHUB_CLIENTID \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_secret=$JHUB_CLIENTSECRET \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.oauth_callback_url=$JHUB_CALLBACKURL \
@@ -65,7 +66,6 @@ Alternatively, you can deploy an app tracking the `main` branch with
 ```bash
 export JHUB_LOADBALANCERIP="127.0.0.1"
 export JHUB_HOSTS="{fakewebsite-dev.com}"
-export JHUB_SECRETTOKEN="otherfakenumbers"
 export JHUB_CLIENTID="abc999"
 export JHUB_CLIENTSECRET="cba666"
 export JHUB_CALLBACKURL="https://fakewebsite-dev.com/hub/oauth_callback"
@@ -82,7 +82,6 @@ argocd app create daskhub-dev \
     --values values-users.yaml \
     --parameter daskhub.jupyterhub.proxy.service.loadBalancerIP=$JHUB_LOADBALANCERIP \
     --parameter daskhub.jupyterhub.proxy.https.hosts=$JHUB_HOSTS \
-    --parameter daskhub.jupyterhub.proxy.secretToken=$JHUB_SECRETTOKEN \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_id=$JHUB_CLIENTID \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.client_secret=$JHUB_CLIENTSECRET \
     --parameter daskhub.jupyterhub.hub.config.GitHubOAuthenticator.oauth_callback_url=$JHUB_CALLBACKURL \
