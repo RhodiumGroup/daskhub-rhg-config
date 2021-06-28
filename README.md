@@ -17,7 +17,7 @@ This sets up `argocd` for minimalist and dev envrionments, to be interacted with
 
 ### Deploying apps
 
-**NOTE:** For each of the following deployment workflows, if deploying with daskhub version 2021.6.0 or earlier, you will also need to pass the parameter override `daskhub.jupyterhub.proxy.secretToken`. You will need to pass this parameter following your first upgrade to 2021.6.1 or later, but afterwards you no longer need the parameter override.
+**NOTE:** For each of the following deployment workflows, if deploying with daskhub version 2021.6.0 or earlier, you will also need to pass the parameter override `daskhub.jupyterhub.proxy.secretToken`. You will need to pass this parameter following your first upgrade to 2021.6.1 or later, but afterwards you no longer need the parameter override. See [https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/main/CHANGELOG.md#highlights](https://github.com/jupyterhub/zero-to-jupyterhub-k8s/blob/main/CHANGELOG.md#highlights).
 
 Deploy the app fresh, using automated syncing, with `argocd` from the CLI with:
 
