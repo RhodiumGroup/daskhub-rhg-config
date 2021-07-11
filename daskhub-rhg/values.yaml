@@ -266,7 +266,7 @@ daskhub:
                           "tolerations": list(default_tolerations.values()),
                       },
                       "environment": this_env,
-                      "idle_timeout": 60*30, # 30 min idle timeout
+                      "idle_timeout": options.idle_timeout,
                       "scheduler_cores": options.scheduler_cores,
                       "scheduler_memory": options.scheduler_memory,
                   }
@@ -288,6 +288,7 @@ daskhub:
                   Mapping("env_items", default={}, label="Environment Variables"),
                   String("scheduler_memory", default="22.5 G", label="Scheduler Memory"),
                   Float("scheduler_cores", default=3.7, min=1, max=8, label="Scheduler CPUs"),
+                  Float("idle_timeout", default=300, min=0, label="Idle Timeout (s)")
                   handler=option_handler,
               )
           c.Backend.cluster_options = cluster_options
