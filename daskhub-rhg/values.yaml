@@ -19,8 +19,8 @@ daskhub:
       storage:
         capacity: 10Gi
       cpu:
-        limit: 3.6
-        guarantee: 3.6
+        limit: 3.5
+        guarantee: 3.5
       memory:
         limit: 22.5G
         guarantee: 22.5G
@@ -33,8 +33,8 @@ daskhub:
         - display_name: "Rhodium base: stable (large)"
           description: "Larger notebook allowance, with the stable build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a> (v1.0.0)"
           kubespawner_override:
-            cpu_limit: 7.2
-            cpu_guarantee: 7.2
+            cpu_limit: 7.0
+            cpu_guarantee: 7.0
             mem_limit: 45G
             mem_guarantee: 45G
         - display_name: "Rhodium base: latest"
@@ -45,8 +45,8 @@ daskhub:
           description: "Larger notebook allowance, with the latest build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a>"
           kubespawner_override:
             image: gcr.io/rhg-project-1/notebook:latest
-            cpu_limit: 7.2
-            cpu_guarantee: 7.2
+            cpu_limit: 7.0
+            cpu_guarantee: 7.0
             mem_limit: 45G
             mem_guarantee: 45G
         - display_name: "Octave: stable"
@@ -57,8 +57,8 @@ daskhub:
           description: "Larger notebook allowance, with the stable build our Octave-enabled environment (v1.0.0)"
           kubespawner_override:
             image: gcr.io/rhg-project-1/notebook:v1.0.0-octave
-            cpu_limit: 7.2
-            cpu_guarantee: 7.2
+            cpu_limit: 7.0
+            cpu_guarantee: 7.0
             mem_limit: 45G
             mem_guarantee: 45G
         - display_name: "Octave: latest"
@@ -69,8 +69,8 @@ daskhub:
           description: "Larger notebook allowance, with the latest build our Octave-enabled environment"
           kubespawner_override:
             image: gcr.io/rhg-project-1/notebook:octave
-            cpu_limit: 7.2
-            cpu_guarantee: 7.2
+            cpu_limit: 7.0
+            cpu_guarantee: 7.0
             mem_limit: 45G
             mem_guarantee: 45G
         - display_name: "Coastal: stable"
@@ -81,8 +81,8 @@ daskhub:
           description: "Larger notebook allowance, with the stable build our Coastal project environment (v1.0.0)"
           kubespawner_override:
             image: gcr.io/rhg-project-1/notebook:v1.0.0-coastal
-            cpu_limit: 7.2
-            cpu_guarantee: 7.2
+            cpu_limit: 7.0
+            cpu_guarantee: 7.0
             mem_limit: 45G
             mem_guarantee: 45G
         - display_name: "Coastal: latest"
@@ -93,8 +93,8 @@ daskhub:
           description: "Larger notebook allowance, with the latest build of our Coastal project environment"
           kubespawner_override:
             image: gcr.io/rhg-project-1/notebook:coastal
-            cpu_limit: 7.2
-            cpu_guarantee: 7.2
+            cpu_limit: 7.0
+            cpu_guarantee: 7.0
             mem_limit: 45G
             mem_guarantee: 45G
         # uncomment test image to run tests (typically just on adrastea)
@@ -183,13 +183,13 @@ daskhub:
               # 12/15/20: always using one core unless explicitly defined by 
               # `cpus` due to this issue: https://github.com/dask/dask-gateway/issues/364
               # Can update this behavior if that gets addressed
-              # standard_cores = 1.88
-              standard_mem = 11.25
+              # standard_cores = 1.0
+              standard_mem = 6.4
               scaling_factors = {
-                  "micro": 0.5,
-                  "standard": 1,
-                  "big": 2,
-                  "giant": 4
+                  "micro": 1,
+                  "standard": 1.75,
+                  "big": 3.5,
+                  "giant": 7
               }
 
               default_tolerations = {
@@ -277,7 +277,7 @@ daskhub:
                       default="standard",
                       label="Cluster Memory Size"
                   ),
-                  Float("cpus", default=.94, min=.94, max=7.52, label="Worker CPUs"),
+                  Float("cpus", default=1.0, min=1.0, max=7.0, label="Worker CPUs"),
                   String("worker_image", default="gcr.io/rhg-project-1/worker:latest", label="Worker Image"),
                   String("scheduler_image", default="gcr.io/rhg-project-1/scheduler:latest", label="Scheduler Image"),
                   String("extra_pip_packages", default="", label="Extra pip Packages"),
