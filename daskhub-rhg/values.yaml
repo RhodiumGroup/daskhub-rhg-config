@@ -183,13 +183,13 @@ daskhub:
               # 12/15/20: always using one core unless explicitly defined by 
               # `cpus` due to this issue: https://github.com/dask/dask-gateway/issues/364
               # Can update this behavior if that gets addressed
-              # standard_cores = 1.88
-              standard_mem = 11.25
+              # standard_cores = 1.0
+              standard_mem = 6.4
               scaling_factors = {
-                  "micro": 0.5,
-                  "standard": 1,
-                  "big": 2,
-                  "giant": 4
+                  "micro": 1,
+                  "standard": 1.75,
+                  "big": 3.5,
+                  "giant": 7
               }
 
               default_tolerations = {
@@ -277,7 +277,7 @@ daskhub:
                       default="standard",
                       label="Cluster Memory Size"
                   ),
-                  Float("cpus", default=.94, min=.94, max=7.52, label="Worker CPUs"),
+                  Float("cpus", default=1.0, min=1.0, max=7.0, label="Worker CPUs"),
                   String("worker_image", default="gcr.io/rhg-project-1/worker:latest", label="Worker Image"),
                   String("scheduler_image", default="gcr.io/rhg-project-1/scheduler:latest", label="Scheduler Image"),
                   String("extra_pip_packages", default="", label="Extra pip Packages"),
