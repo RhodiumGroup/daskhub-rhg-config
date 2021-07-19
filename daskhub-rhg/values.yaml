@@ -192,7 +192,7 @@ daskhub:
                   "giant": 7
               }
 
-              default_tolerations = {
+              default_worker_tolerations = {
                   "0": {
                       "key": "k8s.dask.org_dedicated",
                       "operator": "Equal",
@@ -200,6 +200,16 @@ daskhub:
                       "effect": "NoSchedule"
                   }
               }
+
+              # put scheduler in jupyter pool to make it non-preemptible
+              scheduler_tolerations = [
+                  {
+                      "key": "hub.jupyter.org_dedicated",
+                      "operator": "Equal",
+                      "value": "user",
+                      "effect": "NoSchedule"
+                  }
+              ]
 
               def option_handler(options):
                   if (":" not in options.worker_image) or (":" not in options.scheduler_image):
@@ -263,7 +273,7 @@ daskhub:
                       "scheduler_extra_pod_annotations": extra_annotations,
                       "scheduler_extra_pod_labels": default_extra_labels,
                       "scheduler_extra_pod_config": {
-                          "tolerations": list(default_tolerations.values()),
+                          "tolerations": scheduler_tolerations
                       },
                       "environment": this_env,
                       "idle_timeout": options.idle_timeout,
@@ -283,7 +293,7 @@ daskhub:
                   String("extra_pip_packages", default="", label="Extra pip Packages"),
                   String("gcsfuse_tokens", default="", label="GCSFUSE Tokens"),
                   String("cred_name", default="", label="Bucket for Google Cloud Creds"),
-                  Mapping("worker_tolerations", default=default_tolerations, label="Worker Pod Tolerations"),
+                  Mapping("worker_tolerations", default=default_worker_tolerations, label="Worker Pod Tolerations"),
                   Mapping("extra_worker_labels", default={}, label="Extra Worker Pod Labels"),
                   Mapping("env_items", default={}, label="Environment Variables"),
                   String("scheduler_memory", default="22.5 G", label="Scheduler Memory"),
