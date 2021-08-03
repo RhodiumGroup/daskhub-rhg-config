@@ -238,13 +238,6 @@ daskhub:
                   # see above comment for why we are commenting out standard_cores for now
                   # cpu_req = scaling_factors[options.profile] * standard_cores
 
-                  # set threads appropriately
-                  # (12/18/20) Currently setting to 1 b/c always only one thread available
-                  # per dask thread
-                  this_env["OMP_NUM_THREADS"]="1"
-                  this_env["MKL_NUM_THREADS"]="1"
-                  this_env["OPENBLAS_NUM_THREADS"]="1"
-
                   return {
                       "worker_cores": options.cpus,
                       # see https://github.com/dask/dask-gateway/blob/e409f0e87f45e0a51fd7c009b5ec010bc5253bf1/dask-gateway-server/dask_gateway_server/backends/kubernetes/controller.py#L1055
