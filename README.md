@@ -32,10 +32,10 @@ export DEPLOY_NAMESPACE="daskhub"
 export DEPLOY_REVISION="v1.2.3"
 
 kubectl create namespace $DEPLOY_NAMESPACE
-argocd app create daskhub \
+argocd app create $DEPLOY_NAMESPACE \
     --repo https://github.com/RhodiumGroup/daskhub-rhg-config.git \
     --revision $DEPLOY_REVISION \
-    --path daskhub-rhg \
+    --path helm \
     --values values.yaml \
     --values values-prod.yaml \
     --values values-users.yaml \
