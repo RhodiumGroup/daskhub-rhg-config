@@ -6,31 +6,28 @@ daskhub:
       networkPolicy:
         ingress:
           - ports:
-            - port: http
             - port: https
             from:
               - podSelector:
                   matchLabels:
-                    gateway.dask.org/instance: "daskhub-dev-dask-gateway"
+                    gateway.dask.org/instance: "laika-dask-gateway"
     # this allows dask-gateway pods to talk to the proxy and autohttps pods
     proxy:
       chp:
         networkPolicy:
           ingress:
             - ports:
-              - port: http
               - port: https
               from:
                 - podSelector:
                     matchLabels:
-                      gateway.dask.org/instance: "daskhub-dev-dask-gateway"
+                      gateway.dask.org/instance: "laika-dask-gateway"
       traefik:
         networkPolicy:
           ingress:
             - ports:
-              - port: http
               - port: https
               from:
                 - podSelector:
                     matchLabels:
-                      gateway.dask.org/instance: "daskhub-dev-dask-gateway"
+                      gateway.dask.org/instance: "laika-dask-gateway"

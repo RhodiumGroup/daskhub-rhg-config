@@ -71,12 +71,13 @@ export JHUB_CLIENTSECRET="cba666"
 export JHUB_CALLBACKURL="https://fakewebsite-dev.com/hub/oauth_callback"
 export DASK_APITOKEN="xyz111"
 export DEPLOY_NAMESPACE="daskhub-dev"
+export BRANCH="main"
 
 kubectl create namespace $DEPLOY_NAMESPACE
-argocd app create daskhub-dev \
+argocd app create $DEPLOY_NAMESPACE \
     --repo https://github.com/RhodiumGroup/daskhub-rhg-config.git \
-    --revision main \
-    --path daskhub-rhg \
+    --revision $BRANCH \
+    --path helm \
     --values values.yaml \
     --values values-dev.yaml \
     --values values-users.yaml \

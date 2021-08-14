@@ -14,94 +14,18 @@ daskhub:
       image:
         pullPolicy: "Always"
         name: gcr.io/rhg-project-1/notebook
-        tag: v1.0.0
+        tag: coastal
       startTimeout: 600
       storage:
         capacity: 10Gi
       cpu:
-        limit: 3.5
-        guarantee: 3.5
+        limit: 7
+        guarantee: 7
       memory:
-        limit: 22.5G
-        guarantee: 22.5G
+        limit: 45G
+        guarantee: 45G
       cloudMetadata:
         blockWithIptables: false
-      profileList:
-        - display_name: "Rhodium base: stable"
-          description: "Stable build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a>. (v1.0.0)"
-          default: true
-        - display_name: "Rhodium base: stable (large)"
-          description: "Larger notebook allowance, with the stable build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a> (v1.0.0)"
-          kubespawner_override:
-            cpu_limit: 7.0
-            cpu_guarantee: 7.0
-            mem_limit: 45G
-            mem_guarantee: 45G
-        - display_name: "Rhodium base: latest"
-          description: "Latest build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a>."
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:latest
-        - display_name: "Rhodium base: latest (large)"
-          description: "Larger notebook allowance, with the latest build of <a href=\"https://gitlab.com/rhodium/infra_management/google/jupyterhub-images/docker_images\">docker_images@master</a>"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:latest
-            cpu_limit: 7.0
-            cpu_guarantee: 7.0
-            mem_limit: 45G
-            mem_guarantee: 45G
-        - display_name: "Octave: stable"
-          description: "Stable build of our Octave-enabled environment (v1.0.0)"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:v1.0.0-octave
-        - display_name: "Octave: stable (large)"
-          description: "Larger notebook allowance, with the stable build our Octave-enabled environment (v1.0.0)"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:v1.0.0-octave
-            cpu_limit: 7.0
-            cpu_guarantee: 7.0
-            mem_limit: 45G
-            mem_guarantee: 45G
-        - display_name: "Octave: latest"
-          description: "Latest build of our Octave-enabled environment"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:octave
-        - display_name: "Octave: latest (large)"
-          description: "Larger notebook allowance, with the latest build our Octave-enabled environment"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:octave
-            cpu_limit: 7.0
-            cpu_guarantee: 7.0
-            mem_limit: 45G
-            mem_guarantee: 45G
-        - display_name: "Coastal: stable"
-          description: "Stable build of our Coastal project environment (v1.0.0)"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:v1.0.0-coastal
-        - display_name: "Coastal: stable (large)"
-          description: "Larger notebook allowance, with the stable build our Coastal project environment (v1.0.0)"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:v1.0.0-coastal
-            cpu_limit: 7.0
-            cpu_guarantee: 7.0
-            mem_limit: 45G
-            mem_guarantee: 45G
-        - display_name: "Coastal: latest"
-          description: "Latest build of our Coastal project environment"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:coastal
-        - display_name: "Coastal: latest (large)"
-          description: "Larger notebook allowance, with the latest build of our Coastal project environment"
-          kubespawner_override:
-            image: gcr.io/rhg-project-1/notebook:coastal
-            cpu_limit: 7.0
-            cpu_guarantee: 7.0
-            mem_limit: 45G
-            mem_guarantee: 45G
-        # uncomment test image to run tests (typically just on adrastea)
-        # - display_name: "Rhodium base: test"
-        #   description: "Test build of our Coastal project environment"
-        #   kubespawner_override:
-        #     image: gcr.io/rhg-project-1/notebook:test
     hub:
       resources:
         requests:
@@ -123,22 +47,6 @@ daskhub:
                   )
                   return pod
               c.KubeSpawner.modify_pod_hook = modify_pod_hook
-              c.JupyterHub.logo_file = '/usr/local/share/jupyterhub/static/custom/images/logo.png'
-              c.JupyterHub.template_paths = ['/usr/local/share/jupyterhub/custom_templates/']
-      extraVolumes:
-        - name: custom-templates
-          gitRepo:
-            repository: "https://github.com/RhodiumGroup/rhodium-custom-jupyterhub-templates.git"
-      extraVolumeMounts:
-        - mountPath: /usr/local/share/jupyterhub/custom_templates
-          name: custom-templates
-          subPath: "rhodium-custom-jupyterhub-templates/templates"
-        - mountPath: /usr/local/share/jupyterhub/static/custom
-          name: custom-templates
-          subPath: "rhodium-custom-jupyterhub-templates/assets"
-      services:
-        dask-gateway:
-          apiToken: OVERRIDEME
       config:
         JupyterHub:
           admin_access: true
@@ -161,7 +69,6 @@ daskhub:
       timeout: 259200
 
     proxy:
-      secretToken: OVERRIDEME
       https:
         enabled: true
         letsencrypt:
@@ -169,9 +76,6 @@ daskhub:
 
   dask-gateway:
     gateway:
-      auth:
-        jupyterhub:
-          apiToken: OVERRIDEME
       extraConfig:
         optionHandler: |
           from dask_gateway_server.options import Options, String, Select, Mapping, Float
