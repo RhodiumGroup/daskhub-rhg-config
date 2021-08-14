@@ -26,6 +26,7 @@ daskhub:
         guarantee: 45G
       cloudMetadata:
         blockWithIptables: false
+      serviceAccountName: jhubuser
     hub:
       resources:
         requests:
