@@ -103,7 +103,14 @@ daskhub:
                       "operator": "Equal",
                       "value": "worker",
                       "effect": "NoSchedule"
+                  },
+                  "1": {
+                      "key": "k8s.dask.org/dedicated",
+                      "operator": "Equal",
+                      "value": "worker",
+                      "effect": "NoSchedule"
                   }
+
               }
 
               # put scheduler in jupyter pool to make it non-preemptible
@@ -113,7 +120,14 @@ daskhub:
                       "operator": "Equal",
                       "value": "user",
                       "effect": "NoSchedule"
+                  },
+                  {
+                      "key": "hub.jupyter.org/dedicated",
+                      "operator": "Equal",
+                      "value": "user",
+                      "effect": "NoSchedule"
                   }
+
               ]
 
               def option_handler(options):
