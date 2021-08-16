@@ -168,7 +168,9 @@ daskhub:
                           "imagePullPolicy": "Always",
                           "securityContext": {
                             "privileged": True # allows gcsfuse mount
-                          }
+                          },
+                          "serviceAccount": "jhubuser",
+                          "serviceAccountName": "jhubuser",
                       },
                       "scheduler_extra_container_config": {
                           "image": options.scheduler_image,
