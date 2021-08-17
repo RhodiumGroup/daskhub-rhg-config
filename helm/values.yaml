@@ -169,8 +169,6 @@ daskhub:
                           "securityContext": {
                             "privileged": True # allows gcsfuse mount
                           },
-                          "serviceAccount": "jhubuser",
-                          "serviceAccountName": "jhubuser",
                       },
                       "scheduler_extra_container_config": {
                           "image": options.scheduler_image,
@@ -178,7 +176,9 @@ daskhub:
                       },
                       "worker_extra_pod_annotations": extra_annotations,
                       "worker_extra_pod_config": {
-                          "tolerations": list(options.worker_tolerations.values())
+                          "tolerations": list(options.worker_tolerations.values()),
+                          "serviceAccount": "jhubuser",
+                          "serviceAccountName": "jhubuser",
                       },
                       "worker_extra_pod_labels": {
                           **default_extra_labels,
