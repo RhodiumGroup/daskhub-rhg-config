@@ -98,10 +98,10 @@ daskhub:
             mem_limit: 45G
             mem_guarantee: 45G
         # uncomment test image to run tests (typically just on adrastea)
-        # - display_name: "Rhodium base: test"
-        #   description: "Test build of our Coastal project environment"
-        #   kubespawner_override:
-        #     image: gcr.io/rhg-project-1/notebook:test
+        - display_name: "Rhodium base: test"
+          description: "Test build of our Coastal project environment"
+          kubespawner_override:
+            image: gcr.io/rhg-project-1/notebook:test
     hub:
       resources:
         requests:
@@ -148,7 +148,7 @@ daskhub:
             - read:user
     scheduling:
       userScheduler:
-        enabled: true
+        enabled: false
       userPlaceholder:
         enabled: false
       userPods:
