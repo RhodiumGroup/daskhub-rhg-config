@@ -148,7 +148,7 @@ daskhub:
             - read:user
     scheduling:
       userScheduler:
-        enabled: false
+        enabled: true
       userPlaceholder:
         enabled: false
       userPods:
