@@ -4,22 +4,23 @@ daskhub:
       config:
         Authenticator:
           admin_users:
-            - bolliger32
             - brews
             - delgadom
-            - dgergel
           allowed_users:
             # rhg employees
-            - ahamidi1
             - hanskolus
             - hhessRHG
             - jk-sohal
             - kemccusker
-            - rhg-smohan
-            - smohan-rhg
             - tghouser
             - wjherndon
             # external collaborators
             - dpa9694
             - jtschoi
             - njdepsky
+            - StefanKlos
+            - ahamidi1
+            - haley-sims
+            - mhubbs618
+            - dgergel
+            - bolliger32
