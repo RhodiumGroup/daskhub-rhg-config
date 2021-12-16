@@ -293,7 +293,7 @@ daskhub:
                   Mapping("extra_worker_labels", default={}, label="Extra Worker Pod Labels"),
                   # AMM may become default in the future and we can remove this option
                   # or modify it to allow different policies
-                  Mapping("active_memory_manager", default=True, label="Enable experimental active memory manager"),
+                  Bool("active_memory_manager", default=True, label="Enable experimental active memory manager"),
                   Mapping("env_items", default={}, label="Environment Variables"),
                   String("scheduler_memory", default="22.5 G", label="Scheduler Memory"),
                   Float("scheduler_cores", default=3.7, min=1, max=8, label="Scheduler CPUs"),
