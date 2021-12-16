@@ -230,6 +230,9 @@ daskhub:
                   # add gcsfuse Tokens
                   this_env["GCSFUSE_TOKENS"] = options.gcsfuse_tokens
 
+                  # add active memory manager flag
+                  this_env["DASK_DISTRIBUTED__SCHEDULER__ACTIVE_MEMORY_MANAGER__START"] = str(options.active_memory_manager)
+
                   # add google cloud auth if specified
                   if options.cred_name != "":
                     this_env["GOOGLE_APPLICATION_CREDENTIALS"] = f"/opt/gcsfuse_tokens/{options.cred_name}.json"
@@ -288,6 +291,9 @@ daskhub:
                   String("cred_name", default="", label="Bucket for Google Cloud Creds"),
                   Mapping("worker_tolerations", default=default_worker_tolerations, label="Worker Pod Tolerations"),
                   Mapping("extra_worker_labels", default={}, label="Extra Worker Pod Labels"),
+                  # AMM may become default in the future and we can remove this option
+                  # or modify it to allow different policies
+                  Mapping("active_memory_manager", default=True, label="Enable experimental active memory manager"),
                   Mapping("env_items", default={}, label="Environment Variables"),
                   String("scheduler_memory", default="22.5 G", label="Scheduler Memory"),
                   Float("scheduler_cores", default=3.7, min=1, max=8, label="Scheduler CPUs"),
