@@ -174,7 +174,7 @@ daskhub:
           apiToken: OVERRIDEME
       extraConfig:
         optionHandler: |
-          from dask_gateway_server.options import Options, String, Select, Mapping, Float
+          from dask_gateway_server.options import Options, String, Select, Mapping, Float, Bool
           from math import ceil
 
           def cluster_options(user):
