@@ -1,5 +1,5 @@
 # daskhub-rhg-config
-Daskhub-flavored Jupyterhub deployment configuration for argocd.
+Daskhub-flavored Jupyterhub deployment configuration for argocd. THIS REPO IS NO LONGER OPERATIONAL.
 
 This is a demonstration sandbox.
 
